@@ -57,12 +57,16 @@ extension FavouritesTableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        showAlert(Location.allLocations()[indexPath.row])
+        showAlert(Location.allLocations()[indexPath.row], sender: tableView.cellForRowAtIndexPath(indexPath)!);
     }
 }
 
 extension FavouritesTableViewController {
-    func showAlert(location: Location) {
+    func showAlert(location: Location, sender: AnyObject) {
+        guard let button = sender as? UITableViewCell else {
+            return
+        }
+
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         
         let goAction = UIAlertAction(title: "Go", style: UIAlertActionStyle.Default) { [unowned self] (action) in
@@ -79,6 +83,11 @@ extension FavouritesTableViewController {
         
         alertController.addAction(goAction)
         alertController.addAction(removeAction)
+        
+        if let presenter = alertController.popoverPresentationController {
+            presenter.sourceView = button
+            presenter.sourceRect = button.bounds
+        }
         
         presentViewController(alertController, animated: true, completion: nil)
     }

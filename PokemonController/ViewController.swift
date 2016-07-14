@@ -107,7 +107,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
         webServer.addDefaultHandlerForMethod("GET", requestClass: GCDWebServerRequest.self, processBlock: {request in
             return GCDWebServerDataResponse.init(JSONObject: self.getCurrentLocationDict())
         })
-        webServer.startWithPort(80, bonjourName: "pokemonController")
+        webServer.startWithPort(8080, bonjourName: "pokemonController")
     }
     
     override func didReceiveMemoryWarning() {
@@ -128,7 +128,7 @@ extension ViewController {
 
 extension ViewController: FavouritesTableViewControllerDelegate {
     @IBAction func addToFavourite(sender: AnyObject) {
-        showAlert()
+        showAlert(sender)
     }
     
     func favouritesTableViewControllerDidSelectLocation(viewController: FavouritesTableViewController, location: Location) {
@@ -139,7 +139,11 @@ extension ViewController: FavouritesTableViewControllerDelegate {
         showMapOnLocation()
     }
     
-    func showAlert() {
+    func showAlert(sender: AnyObject) {
+        guard let button = sender as? UIView else {
+            return
+        }
+        
         let alertController = UIAlertController(title: "Add to Favourites", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
         
         alertController.addTextFieldWithConfigurationHandler { (textField) in
@@ -157,6 +161,11 @@ extension ViewController: FavouritesTableViewControllerDelegate {
         
         alertController.addAction(sendAction)
         alertController.addAction(cancelAction)
+        
+        if let presenter = alertController.popoverPresentationController {
+            presenter.sourceView = button
+            presenter.sourceRect = button.bounds
+        }
         
         presentViewController(alertController, animated: true, completion: nil)
     }
