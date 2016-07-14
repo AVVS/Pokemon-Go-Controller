@@ -23,7 +23,7 @@ def getPokemonLocation():
 		response = urllib2.urlopen(ip, timeout = 1)
 		return json.load(response)
 	except urllib2.URLError as e:
-		print id_generator(), "Error:", e.reason, "                            \r",
+		print id_generator(), "Error:", e.reason, "                                                                     \r",
 		sys.stdout.flush()
 		time.sleep(1)
 

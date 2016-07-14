@@ -27,6 +27,7 @@ def id_generator(size=1, chars="\\|/"):
 
 def clickAction():
 	os.system("./autoClicker -x 505 -y 1049")
+	time.sleep(0.1)
 	os.system("./autoClicker -x 544 -y 1103")
 	time.sleep(1)
 	print id_generator(), "clicking!!              \r",
