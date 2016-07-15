@@ -6,8 +6,9 @@ import time
 import sys
 import random
 import signal
+import socket
 
-ip = "http://192.168.1.3:8080/"
+ip = "http://192.168.5.42:8080/"
 lastLat = ""
 lastLng = ""
 
@@ -24,6 +25,10 @@ def getPokemonLocation():
 		return json.load(response)
 	except urllib2.URLError as e:
 		print id_generator(), "Error:", e.reason, "                                                                     \r",
+		sys.stdout.flush()
+		time.sleep(1)
+	except socket.timeout:
+		print id_generator(), "Timeout error                                   \r",
 		sys.stdout.flush()
 		time.sleep(1)
 
